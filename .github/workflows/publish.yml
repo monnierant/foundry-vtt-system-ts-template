@@ -21,9 +21,6 @@ jobs:
       - name: Install Vite
         run: npm install -g vite
 
-      - name: Clean Package Lock
-        run: rm package-lock.json
-
       - name: Install dependencies
         run: npm install
 

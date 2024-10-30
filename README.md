@@ -16,11 +16,13 @@ Replace all ref to `MySyst` by your system name
 
 ## CI
 
-You must create a secret in github action `GITHUB_TOKEN` with a personal access token so `semantic-release` will be able to clone your code and make release
+You must create a secret in github action `GH_TOKEN` with a personal access token so `semantic-release` will be able to clone your code and make release
 
 - contents: write to be able to publish a GitHub release
 - issues: write to be able to comment on released issues
 - pull-requests: write to be able to comment on released pull requests
+
+You must create a secret in github action `FVTT_PUBLISH_TOKEN`with the `package Release Token`from foundry.
 
 (cf [@semantic-release/github](https://github.com/semantic-release/github))
 

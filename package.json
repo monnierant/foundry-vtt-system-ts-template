@@ -19,5 +19,8 @@
     "sass": "^1.79.4",
     "typescript": "^5.4",
     "vite": "^5.4.8"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "*"
   }
 }
