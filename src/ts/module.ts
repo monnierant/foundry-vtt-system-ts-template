@@ -16,15 +16,15 @@ import MySystActor from "./apps/documents/MySystActor";
 
 declare global {
   interface DocumentClassConfig {
-    Actor: MySystActor;
+    Actor: typeof MySystActor;
   }
 
-  // interface DataModelConfig {
-  //   Actor: {
-  //     someActorSubtype: SomeActorSubtypeDataModel;
-  //     anotherActorSubtype: AnotherActorSubtypeDataModel;
-  //   };
-  // }
+      interface DataModelConfig {
+    Actor: {
+      character: typeof MySystActorDataModel;
+      npc: typeof MyNpcRoleActorDataModel;
+    };
+  }
 }
 
 async function preloadTemplates(): Promise<any> {
