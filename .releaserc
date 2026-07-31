@@ -16,7 +16,7 @@
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "MODULE_VERSION=${nextRelease.version} GH_TAG=v${nextRelease.version} npm run build && cd dist && zip -r system.zip . -x 'system.zip'",
+        "prepareCmd": "KIND=$KIND_OF_PROJECT; if [ -z \"$KIND\" ]; then if [ -f src/module.json ]; then KIND=module; else KIND=system; fi; fi; MODULE_VERSION=${nextRelease.version} GH_TAG=v${nextRelease.version} npm run build && cd dist && zip -r \"$KIND.zip\" . -x \"$KIND.zip\"",
         "successCmd": "if [ -n \"$RELEASE_AUTH_TOKEN\" ]; then RELEASE_VERSION=${nextRelease.version} npm run publish; else echo 'FVTT_PUBLISH_TOKEN is not set - skipping Foundry registry publish'; fi"
       }
     ],
@@ -24,8 +24,8 @@
       "@semantic-release/github",
       {
         "assets": [
-          { "path": "dist/system.json" },
-          { "path": "dist/system.zip" }
+          { "path": "dist/{system,module}.json" },
+          { "path": "dist/{system,module}.zip" }
         ]
       }
     ]

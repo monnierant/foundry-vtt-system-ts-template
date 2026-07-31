@@ -14,13 +14,19 @@ async function readModuleId(filePath) {
   return manifest.id;
 }
 
+// A package is either a `system` or a `module`. The kind is deduced from which
+// manifest sits in `src/`, so nothing has to be configured to publish a module -
+// KIND_OF_PROJECT stays available as an explicit override.
+const kindOfProject =
+  process.env.KIND_OF_PROJECT ||
+  (fs.existsSync(path.resolve(__dirname, "src", "module.json"))
+    ? "module"
+    : "system");
+
 async function updateReleaseVersion(githubUrl, version, authToken) {
-  const compatibilityInfo = await readCompatibilityInfo(
-    path.resolve(__dirname, "src", "system.json")
-  );
-  const moduleId = await readModuleId(
-    path.resolve(__dirname, "src", "system.json")
-  );
+  const manifestPath = path.resolve(__dirname, "src", `${kindOfProject}.json`);
+  const compatibilityInfo = await readCompatibilityInfo(manifestPath);
+  const moduleId = await readModuleId(manifestPath);
   try {
     const response = await axios.post(
       "https://api.foundryvtt.com/_api/packages/release_version/",
@@ -28,7 +34,7 @@ async function updateReleaseVersion(githubUrl, version, authToken) {
         id: moduleId,
         release: {
           version: version,
-          manifest: `${githubUrl}/releases/download/v${version}/system.json`,
+          manifest: `${githubUrl}/releases/download/v${version}/${kindOfProject}.json`,
           notes: `${githubUrl}/releases/tag/${version}`,
           compatibility: {
             minimum: compatibilityInfo.minimum,

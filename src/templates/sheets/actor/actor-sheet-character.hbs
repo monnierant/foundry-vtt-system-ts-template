@@ -1,7 +1,7 @@
 {{log actor}}
 
 <form class="actor-sheet {{ cssClass }}" autocomplete="off">
-  {{> (partial moduleId "actor/header.hbs") moduleId=moduleId actor=actor}}
+  {{> (partial "actor/header.hbs") actor=actor}}
   <section class="mysyst-talents">
     {{#each actor.system.talents as |talent|}}
     <div class="mysyst-talent">

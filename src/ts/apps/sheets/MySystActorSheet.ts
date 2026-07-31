@@ -1,4 +1,4 @@
-import { moduleId, difficultyLevels } from "../../constants";
+import { moduleId, packagePath, difficultyLevels } from "../../constants";
 import MySystActor from "../documents/MySystActor";
 import { StatHelpers } from "../helpers/StatHelpers";
 
@@ -10,7 +10,7 @@ export default class MySystItemSheet extends ActorSheet {
 
   // Define the template to use for this sheet
   override get template() {
-    return `systems/${moduleId}/templates/sheets/actor/actor-sheet-${this.actor.type}.hbs`;
+    return `${packagePath}/templates/sheets/actor/actor-sheet-${this.actor.type}.hbs`;
   }
 
   // Data to be passed to the template when rendering

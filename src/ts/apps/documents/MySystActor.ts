@@ -1,7 +1,7 @@
 import { MySystActorSystem } from "../schemas/MySystActorSchema";
 
 import MySystActorRollDialog from "../dialogs/MySystRollDialog";
-import { moduleId } from "../../constants";
+import { packagePath } from "../../constants";
 import { StatHelpers } from "../helpers/StatHelpers";
 
 export default class MySystActor extends Actor {
@@ -28,7 +28,7 @@ export default class MySystActor extends Actor {
     const roll = await new Roll(`1d100`).roll();
     const success = roll.total <= value;
     const content = await renderTemplate(
-      `systems/${moduleId}/templates/chat/roll.hbs`,
+      `${packagePath}/templates/chat/roll.hbs`,
       {
         actor: this,
         talent: talent,
