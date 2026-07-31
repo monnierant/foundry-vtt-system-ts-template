@@ -50,6 +50,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_PROJECT: ${{ github.repository }}
+          # Optional override. Left empty, the build deduces `system` or
+          # `module` from which manifest sits in `src/`, so neither kind of
+          # repository needs any configuration here.
+          KIND_OF_PROJECT: ${{ vars.KIND_OF_PROJECT }}
           RELEASE_GITHUB_URL: ${{ github.server_url }}/${{ github.repository }}
           # Absent on repositories that are not published to the Foundry
           # registry; the publish step skips itself when it is empty.

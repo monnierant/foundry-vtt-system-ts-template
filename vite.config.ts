@@ -8,7 +8,22 @@ const moduleVersion = process.env.MODULE_VERSION;
 const githubProject = process.env.GH_PROJECT;
 const githubTag = process.env.GH_TAG;
 const foundryPath = process.env.FOUNDRY_PATH;
-const kindOfProject = process.env.KIND_OF_PROJECT || "system";
+// A package is either a `system` or a `module`. The kind is deduced from which
+// manifest sits in `src/`, so nothing has to be configured to build a module -
+// KIND_OF_PROJECT stays available as an explicit override.
+const kindOfProject =
+  process.env.KIND_OF_PROJECT ||
+  (fs.existsSync(path.resolve(__dirname, "src", "module.json"))
+    ? "module"
+    : "system");
+
+// The manifest is the single source of truth for the package id, so the
+// TypeScript sources never import it directly - it is injected below and read
+// back from `constants.ts`. That is what lets the same sources build either
+// kind without touching an import path.
+const packageId: string = JSON.parse(
+  fs.readFileSync(path.resolve(__dirname, "src", `${kindOfProject}.json`), "utf-8")
+).id;
 
 console.log(process.env.VSCODE_INJECTION);
 
@@ -22,6 +37,10 @@ export default defineConfig({
     },
   },
   base: "",
+  define: {
+    __PACKAGE_ID__: JSON.stringify(packageId),
+    __PACKAGE_KIND__: JSON.stringify(kindOfProject),
+  },
   build: {
     // sourcemap: true,
     assetsDir: "dist/assets/",

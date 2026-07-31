@@ -4,7 +4,7 @@ import "../styles/style.scss";
 
 import MySystActorSheet from "./apps/sheets/MySystActorSheet";
 
-import { moduleId } from "./constants";
+import { moduleId, packagePath } from "./constants";
 import { range } from "./handlebarsHelpers/range";
 import { concat } from "./handlebarsHelpers/concat";
 import { ternary } from "./handlebarsHelpers/ternary";
@@ -29,7 +29,7 @@ declare global {
 
 async function preloadTemplates(): Promise<any> {
   const templatePaths = [
-    `systems/${moduleId}/templates/partials/actor/header.hbs`,
+    `${packagePath}/templates/partials/actor/header.hbs`,
   ];
 
   return loadTemplates(templatePaths);

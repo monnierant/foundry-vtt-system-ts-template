@@ -25,9 +25,19 @@ async function readModuleId(filePath: string): Promise<string> {
   return manifest.id;
 }
 
+// A package is either a `system` or a `module`. The kind is deduced from which
+// manifest sits in `src/`, so nothing has to be configured to publish a module -
+// KIND_OF_PROJECT stays available as an explicit override.
+// `||` rather than `??`: CI hands over an empty string when the repository
+// variable is unset, and that must fall through to auto-detection.
+const kindOfProject =
+  process.env.KIND_OF_PROJECT ||
+  (fs.existsSync(path.resolve(__dirname, 'src', 'module.json')) ? 'module' : 'system');
+
 async function updateReleaseVersion(githubUrl: string, version: string, authToken:string) {
-  const compatibilityInfo = await readCompatibilityInfo(path.resolve(__dirname, 'src' ,'system.json'));
-  const moduleId = await readModuleId(path.resolve(__dirname, 'src', 'system.json'));
+  const manifestPath = path.resolve(__dirname, 'src', `${kindOfProject}.json`);
+  const compatibilityInfo = await readCompatibilityInfo(manifestPath);
+  const moduleId = await readModuleId(manifestPath);
   try {
     const response = await axios.post(
       'https://api.foundryvtt.com/_api/packages/release_version/',
@@ -35,7 +45,7 @@ async function updateReleaseVersion(githubUrl: string, version: string, authToke
         id: moduleId,
         release: {
           version: version,
-          manifest: `${githubUrl}/releases/download/v${version}/system.json`,
+          manifest: `${githubUrl}/releases/download/v${version}/${kindOfProject}.json`,
           notes: `${githubUrl}/releases/tag/${version}`,
           compatibility: {
             minimum: compatibilityInfo.minimum,

@@ -1,4 +1,4 @@
-import { difficultyLevels, moduleId } from "../../constants";
+import { difficultyLevels, packagePath } from "../../constants";
 import MySystActor from "../documents/MySystActor";
 
 export default class MySystActorRollDialog extends Dialog {
@@ -50,7 +50,7 @@ export default class MySystActorRollDialog extends Dialog {
 
   // Define the template to use for this sheet
   override get template() {
-    return `systems/${moduleId}/templates/dialog/roll.hbs`;
+    return `${packagePath}/templates/dialog/roll.hbs`;
   }
 
   // Data to be passed to the template when rendering
